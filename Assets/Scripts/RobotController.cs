@@ -81,6 +81,7 @@ public class RobotController : MonoBehaviour
             {
                 transform.position = translationTarget;
                 currentTile = targetTile;
+                currentTile.Arrive(gameObject);
             }
             else
             {

@@ -12,9 +12,6 @@ public class LevelTile : MonoBehaviour
 
     public int Elevation => elevation;
 
-    [SerializeField]
-    bool causeDeath = false;
-
     private GameObject occupier;
 
     public bool Accessible
@@ -24,10 +21,6 @@ public class LevelTile : MonoBehaviour
 
     Color GizmoColor()
     {
-        if (causeDeath)
-        {
-            return Color.red;
-        }
         if (!accessible)
         {
             return Color.magenta;
@@ -71,5 +64,17 @@ public class LevelTile : MonoBehaviour
         {
             Debug.LogWarning($"{go} attempted to free {name} but wasn't occupying it ({occupier} was)");
         }
+    }
+
+    public void Arrive(GameObject go)
+    {
+        if (occupier == null || occupier == go)
+        {
+            gameObject.BroadcastMessage("OnEnterTile", occupier, SendMessageOptions.DontRequireReceiver);
+        } else
+        {
+            Debug.LogError($"{go} attempted to arrive {name} but {occupier} was already there");
+        }
+
     }
 }
