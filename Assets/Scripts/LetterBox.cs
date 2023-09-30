@@ -63,13 +63,18 @@ public class LetterBox : MonoBehaviour
     public bool InWord { 
         get => inWord; 
         set {
-            InWord = value;
+            inWord = value;
+            if (value && !Unlocked)
+            {
+                Unlocked = true;
+            }
             SyncUI();
         } 
     }
 
     void SyncUI()
     {
+        Debug.Log($"Syncing {name} H:{Hovered} S:{Selected == this}");
         TextUI.color = unlocked ? unlockedText : lockedText;
 
         if (Hovered)
@@ -80,10 +85,10 @@ public class LetterBox : MonoBehaviour
             BgImage.color = unlocked ? unlockedBg : lockedBg;
         }
         
-        if (Hovered || Selected)
+        if (Hovered || Selected == this)
         {
             FgImage.enabled = true;
-            FgImage.color = Selected ? selectedFg : hoverFg;
+            FgImage.color = Selected == this ? selectedFg : hoverFg;
         } else if (InWord)
         {
             FgImage.color = inWordFg;
@@ -121,6 +126,8 @@ public class LetterBox : MonoBehaviour
         SyncUI();
     }
 
+    static string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     private void Update()
     {
         if (Hovered && Input.GetMouseButtonDown(0))
@@ -138,10 +145,13 @@ public class LetterBox : MonoBehaviour
             var text = Input.inputString;
             if (text.Length > 0)
             {
-                var charText = text.Substring(text.Length - 1);
-                TextUI.text = charText.ToUpper();
-                OnLetterBoxChange?.Invoke(this);
-                SyncUI();
+                var charText = text.Substring(text.Length - 1).ToUpper();
+                if (validChars.Contains(charText))
+                {
+                    TextUI.text = charText;
+                    OnLetterBoxChange?.Invoke(this);
+                    SyncUI();
+                }
             }
         }
     }
