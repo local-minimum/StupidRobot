@@ -55,9 +55,27 @@ public class LetterBox : MonoBehaviour
         }
     }
     private bool Hovered { get; set; }
-    public static LetterBox Selected { get; private set; }
+    private static LetterBox _selected;
+    public static LetterBox Selected {
+        get => _selected; 
+        set {
+            var prevSelected = _selected;
+            _selected = value;
+            if (prevSelected != value && prevSelected != null)
+            {
+                prevSelected.SyncUI();
+            }
+        } 
+    }
 
-    public string Letter { get => TextUI.text; }
+    public string Letter { 
+        get => TextUI.text; 
+        set {
+            TextUI.text = value;
+            OnLetterBoxChange?.Invoke(this);
+            SyncUI();
+        } 
+    }
 
     private bool inWord = false;
     public bool InWord { 
@@ -105,7 +123,7 @@ public class LetterBox : MonoBehaviour
         SyncUI();
     }
 
-    private void OnMouseEnter()
+    public void OnMouseEnter()
     {
         Debug.Log("Enter");
         if (!unlocked) return;
@@ -113,7 +131,7 @@ public class LetterBox : MonoBehaviour
         SyncUI();
     }
 
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
         Debug.Log("Exit");
         Hovered = false;
@@ -126,33 +144,12 @@ public class LetterBox : MonoBehaviour
         SyncUI();
     }
 
-    static string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private void Update()
     {
         if (Hovered && Input.GetMouseButtonDown(0))
         {
             SelectBox();
-        } else if (Selected == this)
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Space))
-            {
-                TextUI.text = "";
-                OnLetterBoxChange?.Invoke(this);
-                SyncUI();
-            }
-
-            var text = Input.inputString;
-            if (text.Length > 0)
-            {
-                var charText = text.Substring(text.Length - 1).ToUpper();
-                if (validChars.Contains(charText))
-                {
-                    TextUI.text = charText;
-                    OnLetterBoxChange?.Invoke(this);
-                    SyncUI();
-                }
-            }
         }
     }
 }

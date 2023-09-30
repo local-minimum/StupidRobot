@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public delegate void AbilitiesChange(string[] abilites);
+public delegate void AbilitiesChange(string[] abilities);
 
 public class LetterField : MonoBehaviour
 {
@@ -166,4 +166,23 @@ public class LetterField : MonoBehaviour
         }
     }
 
+    static string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Space))
+        {
+            LetterBox.Selected.Letter = "";
+        }
+
+        var text = Input.inputString;
+        if (text.Length > 0)
+        {
+            var charText = text.Substring(text.Length - 1).ToUpper();
+            if (validChars.Contains(charText))
+            {
+                LetterBox.Selected.Letter = charText;
+            }
+        }
+    }
 }
