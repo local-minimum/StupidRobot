@@ -18,23 +18,32 @@ public class LetterField : MonoBehaviour
 
     private void Start()
     {
-        SelectNextLetterBox();
+        SelectNextLetterBox(false);
     }
 
     private void OnEnable()
     {
         LetterBox.OnLetterBoxChange += LetterBox_OnLetterBoxChange;
+        OnAbilitiesChange += LetterField_OnAbilitiesChange;
     }
 
     private void OnDisable()
     {
+        OnAbilitiesChange -= LetterField_OnAbilitiesChange;
         LetterBox.OnLetterBoxChange -= LetterBox_OnLetterBoxChange;    
     }
 
-    private void LetterBox_OnLetterBoxChange(LetterBox letterBox)
+    public bool CanCleanBoxes { get; private set; }
+
+    private void LetterField_OnAbilitiesChange(string[] abilities)
+    {
+        CanCleanBoxes = abilities.Contains("CLEAN");
+    }
+
+    private void LetterBox_OnLetterBoxChange(LetterBox letterBox, bool backSpace)
     {
         CheckWords();
-        SelectNextLetterBox();
+        SelectNextLetterBox(backSpace);
     }
 
     [SerializeField]
@@ -134,12 +143,16 @@ public class LetterField : MonoBehaviour
         OnAbilitiesChange?.Invoke(abilites.ToArray());
     }
 
-    void SelectNextLetterBox()
+    void SelectNextLetterBox(bool backwards)
     {
+        int index = backwards ? letterBoxes.Length - 1 : 0;
+        System.Func<bool> done = () => backwards ? index == 0 : index == letterBoxes.Length;
+        int direction = backwards ? -1 : 1;
+
         var after = LetterBox.Selected;
-        for (int i = 0; i<letterBoxes.Length; i++)
+        while (!done())
         {
-            var box = letterBoxes[i];
+            var box = letterBoxes[index];
             if (after == box)
             {
                 after = null;
@@ -147,6 +160,7 @@ public class LetterField : MonoBehaviour
                 box.SelectBox();
                 return;
             }
+            index += direction;
         }
 
         if (after != null)
@@ -155,14 +169,17 @@ public class LetterField : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i<letterBoxes.Length; i++)
+        index = backwards ? letterBoxes.Length - 1 : 0;
+        while (!done())
         {
-            var box = letterBoxes[i];
+            var box = letterBoxes[index];
             if (box.Unlocked)
             {
                 box.SelectBox();
                 return;
             }
+
+            index += direction;
         }
     }
 
@@ -170,18 +187,23 @@ public class LetterField : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            LetterBox.Selected.Letter = " ";
         }
-
-        var text = Input.inputString;
-        if (text.Length > 0)
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
-            var charText = text.Substring(text.Length - 1).ToUpper();
-            if (validChars.Contains(charText))
+            LetterBox.Selected.Letter = "";
+        }
+        else
+        {
+            var text = Input.inputString;
+            if (text.Length > 0)
             {
-                LetterBox.Selected.Letter = charText;
+                var charText = text.Substring(text.Length - 1).ToUpper();
+                if (validChars.Contains(charText))
+                {
+                    LetterBox.Selected.Letter = charText;
+                }
             }
         }
     }

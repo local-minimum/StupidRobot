@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public delegate void LetterBoxChangeEvent(LetterBox letterBox);
+public delegate void LetterBoxChangeEvent(LetterBox letterBox, bool backSpace);
 
 public class LetterBox : MonoBehaviour
 {
     public static event LetterBoxChangeEvent OnLetterBoxChange;
-    
+    LetterField field;
+
     [SerializeField]
     TMPro.TextMeshProUGUI TextUI;
 
@@ -71,8 +72,9 @@ public class LetterBox : MonoBehaviour
     public string Letter { 
         get => TextUI.text; 
         set {
-            TextUI.text = value;
-            OnLetterBoxChange?.Invoke(this);
+            var empty = string.IsNullOrEmpty(value);
+            TextUI.text = empty ? " " : value;
+            OnLetterBoxChange?.Invoke(this, empty);
             SyncUI();
         } 
     }
@@ -84,7 +86,7 @@ public class LetterBox : MonoBehaviour
             inWord = value;
             if (value && !Unlocked)
             {
-                Unlocked = true;
+                Unlocked = field.CanCleanBoxes;
             }
             SyncUI();
         } 
@@ -118,6 +120,7 @@ public class LetterBox : MonoBehaviour
 
     private void Start()
     {
+        field = GetComponentInParent<LetterField>();
         unlocked = startUnlocked;
         SyncUI();
     }
