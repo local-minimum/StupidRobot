@@ -172,7 +172,7 @@ public class LetterField : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Space))
         {
-            LetterBox.Selected.Letter = "";
+            LetterBox.Selected.Letter = " ";
         }
 
         var text = Input.inputString;

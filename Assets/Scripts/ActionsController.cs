@@ -4,12 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
+public enum ActionEventType
+{
+    None,
+    Move,
+    Left,
+    Right,
+}
+
+public delegate void ActionEvent(ActionEventType eventType);
+
+
 public class ActionsController : MonoBehaviour
 {
+    [System.Serializable]
+    private struct ButtonAction
+    {
+        public Button button;
+        public string actionName;
+        public ActionEventType eventType;
+    }
+
+    public static event ActionEvent OnActionEvent;
+
     [SerializeField]
-    Button MoveButton;
-    [SerializeField]
-    string MoveAction;
+    ButtonAction[] buttonActions;
 
     private void Start()
     {
@@ -18,7 +37,11 @@ public class ActionsController : MonoBehaviour
 
     void ClearActionMemory()
     {
-        MoveButton.gameObject.SetActive(false);
+        for (int i = 0; i<buttonActions.Length; i++)
+        {
+            var action = buttonActions[i];
+            action.button.gameObject.SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -48,6 +71,22 @@ public class ActionsController : MonoBehaviour
 
     private void LetterField_OnAbilitiesChange(string[] abilities)
     {
-        SyncButton(MoveButton, MoveAction, abilities);
+        for (int i = 0; i<buttonActions.Length; i++)
+        {
+            var action = buttonActions[i];
+            SyncButton(action.button, action.actionName, abilities);
+        }
+    }
+
+    public void OnClickButton(Button btn)
+    {
+        for (int i = 0; i<buttonActions.Length; i++)
+        {
+            var action = buttonActions[i];
+            if (action.button == btn)
+            {
+                OnActionEvent?.Invoke(action.eventType);
+            }
+        }
     }
 }

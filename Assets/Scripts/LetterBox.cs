@@ -92,7 +92,6 @@ public class LetterBox : MonoBehaviour
 
     void SyncUI()
     {
-        Debug.Log($"Syncing {name} H:{Hovered} S:{Selected == this}");
         TextUI.color = unlocked ? unlockedText : lockedText;
 
         if (Hovered)
@@ -125,7 +124,6 @@ public class LetterBox : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        Debug.Log("Enter");
         if (!unlocked) return;
         Hovered = true;
         SyncUI();
@@ -133,7 +131,6 @@ public class LetterBox : MonoBehaviour
 
     public void OnMouseExit()
     {
-        Debug.Log("Exit");
         Hovered = false;
         SyncUI();
     }
