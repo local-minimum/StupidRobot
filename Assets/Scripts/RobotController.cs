@@ -7,11 +7,23 @@ public class RobotController : MonoBehaviour
     private void OnEnable()
     {
         ActionsController.OnActionEvent += ActionsController_OnActionEvent;
+        ActionsController.OnStatusEvent += ActionsController_OnStatusEvent;
     }
+
 
     private void OnDisable()
     {
         ActionsController.OnActionEvent -= ActionsController_OnActionEvent;
+        ActionsController.OnStatusEvent -= ActionsController_OnStatusEvent;
+    }
+
+    bool eager;
+    private void ActionsController_OnStatusEvent(StatusEventType eventType, bool enabled)
+    {
+        if (eventType == StatusEventType.Eager)
+        {
+            eager = enabled;
+        }
     }
 
     [SerializeField]
@@ -141,8 +153,10 @@ public class RobotController : MonoBehaviour
         {
             actionStart = Time.timeSinceLevelLoad;
             currentAction = nextAction;
-            // TODO: Perhaps this should be an ability to not repeat last input
-            nextAction = ActionEventType.None;
+            if (!eager)
+            {
+                nextAction = ActionEventType.None;
+            }
             StartAction(currentAction);
         }
     }

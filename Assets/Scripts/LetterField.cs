@@ -189,10 +189,11 @@ public class LetterField : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
+            LetterBox.Selected.Letter = "";
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            LetterBox.Selected.Letter = "";
+            LetterBox.Selected.Letter = " ";
         }
         else
         {

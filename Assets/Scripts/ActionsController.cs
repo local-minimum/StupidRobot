@@ -15,7 +15,7 @@ public enum ActionEventType
 public enum StatusEventType
 {
     None,
-    Calm,
+    Eager,
 }
 
 public delegate void ActionEvent(ActionEventType eventType);
@@ -102,6 +102,7 @@ public class ActionsController : MonoBehaviour
             {
                 status.textUI.gameObject.SetActive(false);
             }
+            OnStatusEvent?.Invoke(status.eventType, statusStates[status.actionName]);
         }
     }
 
