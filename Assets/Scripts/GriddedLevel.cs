@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class GriddedLevel : MonoBehaviour
 {
-    public static GriddedLevel instance { get; private set; }
+    private static GriddedLevel _instance;
+    public static GriddedLevel instance { 
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GriddedLevel>();
+            }
+            return _instance;
+        }
+        private set
+        {
+            _instance = value;
+        }
+    }
 
     private void Awake()
     {
@@ -14,7 +28,10 @@ public class GriddedLevel : MonoBehaviour
         } else if (instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        tiles = GetComponentsInChildren<LevelTile>();
     }
 
     private void OnDestroy()
@@ -28,4 +45,20 @@ public class GriddedLevel : MonoBehaviour
     public static float GridSize { get => instance.gridSize; }
     [SerializeField]
     float gridSize = 3f;
+
+    public static LevelTile GetTile(Vector3 position) => instance._GetTile(position);
+
+    LevelTile[] tiles;
+
+    private LevelTile _GetTile(Vector3 position)
+    {
+        for (int i = 0; i<tiles.Length; i++)
+        {
+            if (tiles[i].Contains(position))
+            {
+                return tiles[i];
+            }
+        }
+        return null;
+    }
 }

@@ -25,6 +25,20 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    LevelTile currentTile;
+
+    private void Start()
+    {
+        currentTile = GriddedLevel.GetTile(transform.position);
+        if (currentTile == null)
+        {
+            Debug.LogError("Failed to find current tile!");
+        } else
+        {
+            currentTile.Occupy(gameObject);
+        }
+    }
+
     ActionEventType nextAction = ActionEventType.None;
 
     [SerializeField]
@@ -35,6 +49,7 @@ public class RobotController : MonoBehaviour
 
     Vector3 translationStart;
     Vector3 translationTarget;
+    LevelTile targetTile;
 
     [SerializeField]
     AnimationCurve moveEasing;
@@ -53,6 +68,7 @@ public class RobotController : MonoBehaviour
             if (progress == 1)
             {
                 transform.position = translationTarget;
+                currentTile = targetTile;
             }
             else
             {
@@ -88,6 +104,25 @@ public class RobotController : MonoBehaviour
         {
             translationStart = transform.position;
             translationTarget = translationStart + transform.up * GriddedLevel.GridSize;
+            targetTile = GriddedLevel.GetTile(translationTarget);
+            if (targetTile == null)
+            {
+                Debug.Log($"Cant move to {translationTarget} because there's no tile there");
+                currentAction = ActionEventType.None;
+            } else if (!targetTile.Accessible)
+            {
+                Debug.Log($"Cant move to {targetTile} because it's not accessible");
+                currentAction = ActionEventType.None;
+            } else if (targetTile.Elevation > currentTile.Elevation)
+            {
+                Debug.Log($"Cant move to {targetTile} because it's higher up");
+                currentAction = ActionEventType.None;
+            } else
+            {
+                translationTarget = targetTile.transform.position;
+                targetTile.Occupy(gameObject);
+                currentTile.Free(gameObject);
+            }
         } else if (action == ActionEventType.Left || action == ActionEventType.Right)
         {
             rotationStart = transform.rotation;
@@ -106,6 +141,7 @@ public class RobotController : MonoBehaviour
         {
             actionStart = Time.timeSinceLevelLoad;
             currentAction = nextAction;
+            // Perhaps this should be an ability to not repeat last input
             nextAction = ActionEventType.None;
             StartAction(currentAction);
         }
