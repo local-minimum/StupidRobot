@@ -146,7 +146,7 @@ public class LetterField : MonoBehaviour
     void SelectNextLetterBox(bool backwards)
     {
         int index = backwards ? letterBoxes.Length - 1 : 0;
-        System.Func<bool> done = () => backwards ? index == 0 : index == letterBoxes.Length;
+        System.Func<bool> done = () => backwards ? index == -1 : index == letterBoxes.Length;
         int direction = backwards ? -1 : 1;
 
         var after = LetterBox.Selected;

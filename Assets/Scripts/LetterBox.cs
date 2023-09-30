@@ -41,7 +41,13 @@ public class LetterBox : MonoBehaviour
     Color selectedFg;
 
     [SerializeField]
+    Color selectedBg;
+
+    [SerializeField]
     Color inWordFg;
+
+    [SerializeField]
+    Color inWordBg;
 
     [SerializeField]
     bool startUnlocked;
@@ -96,24 +102,25 @@ public class LetterBox : MonoBehaviour
     {
         TextUI.color = unlocked ? unlockedText : lockedText;
 
-        if (Hovered)
+        if (Selected == this)
+        {
+            BgImage.color = selectedBg;
+            FgImage.color = selectedFg;
+            FgImage.enabled = true;
+        }
+        else if (Hovered)
         {
             BgImage.color = hoverBg;
+            FgImage.color = hoverFg;
+            FgImage.enabled = true;
+        } else if (inWord)
+        {
+            BgImage.color = inWordBg;
+            FgImage.color = inWordFg;
+            FgImage.enabled = true;
         } else 
         {
             BgImage.color = unlocked ? unlockedBg : lockedBg;
-        }
-        
-        if (Hovered || Selected == this)
-        {
-            FgImage.enabled = true;
-            FgImage.color = Selected == this ? selectedFg : hoverFg;
-        } else if (InWord)
-        {
-            FgImage.color = inWordFg;
-            FgImage.enabled = true;
-        } else
-        {
             FgImage.enabled = false;
         }
     }

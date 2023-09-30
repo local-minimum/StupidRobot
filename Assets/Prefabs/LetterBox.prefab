@@ -66,8 +66,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 1959756064, guid: f4842bb64ec9ee64a8e403c8ea899aef, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
   m_FillMethod: 4
@@ -140,7 +140,9 @@ MonoBehaviour:
   hoverBg: {r: 0.936, g: 0.936, b: 0.936, a: 0.85882354}
   hoverFg: {r: 0.054901965, g: 0.39607847, b: 0.3647059, a: 0.7921569}
   selectedFg: {r: 0.69803923, g: 0.93725497, b: 0.60784316, a: 1}
+  selectedBg: {r: 0.69803923, g: 0.93725497, b: 0.60784316, a: 0.6509804}
   inWordFg: {r: 0.5058824, g: 0.33333334, b: 0.60784316, a: 1}
+  inWordBg: {r: 0.5058824, g: 0.33333334, b: 0.60784316, a: 0.4392157}
   startUnlocked: 1
 --- !u!222 &1202827009210252365
 CanvasRenderer:
@@ -170,9 +172,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 525778526, guid: f4842bb64ec9ee64a8e403c8ea899aef, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
