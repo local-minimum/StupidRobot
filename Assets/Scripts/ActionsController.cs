@@ -10,6 +10,7 @@ public enum ActionEventType
     Move,
     Left,
     Right,
+    Dash,
 }
 
 public enum StatusEventType

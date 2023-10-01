@@ -75,7 +75,7 @@ public class RobotController : MonoBehaviour
     {
         if (action == ActionEventType.None) return;
 
-        if (action == ActionEventType.Move)
+        if (action == ActionEventType.Move || action == ActionEventType.Dash)
         {
             if (progress == 1)
             {
@@ -107,6 +107,26 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    LevelTile ValidateTargetTile(Vector3 translationTarget)
+    {
+        var targetTile = GriddedLevel.GetTile(translationTarget);
+        if (targetTile == null)
+        {
+            Debug.Log($"Cant move to {translationTarget} because there's no tile there");
+            return null;
+        } else if (!targetTile.Accessible)
+        {
+            Debug.Log($"Cant move to {targetTile} because it's not accessible");
+            return null;
+        } else if (targetTile.Elevation > currentTile.Elevation)
+        {
+            Debug.Log($"Cant move to {targetTile} because it's higher up");
+            return null;
+        }
+
+        return targetTile;
+    }
+
     void StartAction(ActionEventType action)
     {
         if (action == ActionEventType.None) return;
@@ -116,19 +136,9 @@ public class RobotController : MonoBehaviour
         if (action == ActionEventType.Move)
         {
             translationStart = transform.position;
-            translationTarget = translationStart + transform.up * GriddedLevel.GridSize;
-            targetTile = GriddedLevel.GetTile(translationTarget);
+            targetTile = ValidateTargetTile(translationStart + transform.up * GriddedLevel.GridSize);
             if (targetTile == null)
             {
-                Debug.Log($"Cant move to {translationTarget} because there's no tile there");
-                currentAction = ActionEventType.None;
-            } else if (!targetTile.Accessible)
-            {
-                Debug.Log($"Cant move to {targetTile} because it's not accessible");
-                currentAction = ActionEventType.None;
-            } else if (targetTile.Elevation > currentTile.Elevation)
-            {
-                Debug.Log($"Cant move to {targetTile} because it's higher up");
                 currentAction = ActionEventType.None;
             } else
             {
@@ -136,6 +146,32 @@ public class RobotController : MonoBehaviour
                 targetTile.Occupy(gameObject);
                 currentTile.Free(gameObject);
             }
+        } else if (action == ActionEventType.Dash)
+        {
+
+            translationStart = transform.position;
+            targetTile = null;
+            for (int i = 1; i <= 2; i++)
+            {
+                var tile = ValidateTargetTile(translationStart + transform.up * i * GriddedLevel.GridSize);
+                if (tile == null)
+                {
+                    break;
+                } else
+                {
+                    targetTile = tile;
+                }
+            }
+            if (targetTile == null)
+            {
+                currentAction = ActionEventType.None;
+            } else
+            {
+                translationTarget = targetTile.transform.position;
+                targetTile.Occupy(gameObject);
+                currentTile.Free(gameObject);
+            }
+
         } else if (action == ActionEventType.Left || action == ActionEventType.Right)
         {
             rotationStart = transform.rotation;
