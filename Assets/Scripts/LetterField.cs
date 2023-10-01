@@ -96,8 +96,20 @@ public class LetterField : MonoBehaviour
     [SerializeField]
     string[] Words;
 
-    [SerializeField]
-    int columns = 6;
+    DynamicLayoutGroup _dlg;
+    DynamicLayoutGroup dlg
+    {
+        get
+        {
+            if (_dlg == null)
+            {
+                _dlg = GetComponent<DynamicLayoutGroup>();
+            }
+            return _dlg;
+        }
+    }
+
+    int columns => dlg.Columns;
 
     bool MarkHorizontalWord(string word, int start)
     {

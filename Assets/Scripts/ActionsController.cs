@@ -72,6 +72,8 @@ public class ActionsController : MonoBehaviour
     [SerializeField]
     Color disabledStatus;
 
+    bool clearedActionMemory = false;
+
     private void Start()
     {
         ClearActionMemory();
@@ -80,11 +82,14 @@ public class ActionsController : MonoBehaviour
 
     void ClearActionMemory()
     {
+        if (clearedActionMemory) return;
         for (int i = 0; i<buttonActions.Length; i++)
         {
             var action = buttonActions[i];
             action.button.gameObject.SetActive(false);
         }
+
+        clearedActionMemory = true;
     }
 
     bool initedStatuses = false;
@@ -124,6 +129,7 @@ public class ActionsController : MonoBehaviour
     
     void SyncButton(Button button, string action, string[] abilities)
     {
+        ClearActionMemory();
         if (abilities.Contains(action))
         {
             if (!button.gameObject.activeSelf)
