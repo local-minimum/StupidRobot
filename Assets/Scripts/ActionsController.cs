@@ -87,8 +87,12 @@ public class ActionsController : MonoBehaviour
         }
     }
 
+    bool initedStatuses = false;
+
     void InitStatuses()
     {
+        if (initedStatuses) return;
+
         for (int i = 0; i<statuses.Length; i++)
         {
             var status = statuses[i];
@@ -104,6 +108,8 @@ public class ActionsController : MonoBehaviour
             }
             OnStatusEvent?.Invoke(status.eventType, statusStates[status.actionName]);
         }
+
+        initedStatuses = true;
     }
 
     private void OnEnable()
@@ -133,6 +139,7 @@ public class ActionsController : MonoBehaviour
 
     void SyncAbility(StatusText statusText, string[] abilities)
     {
+        InitStatuses();
         var active = abilities.Contains(statusText.actionName) == statusText.isPositive;
         var current = statusStates[statusText.actionName];
 

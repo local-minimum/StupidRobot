@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public delegate void LevelResetEvent();
 
 public class TrapTile : MonoBehaviour
 {
+    public static event LevelResetEvent OnLevelReset;
+
     [SerializeField]
     float delay = 0.5f;
 
@@ -37,6 +40,7 @@ public class TrapTile : MonoBehaviour
             go.transform.Rotate(Vector3.forward, rotationSpeed * rotator.Evaluate(progress));
             yield return new WaitForSeconds(0.02f);
         }
+        OnLevelReset?.Invoke();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

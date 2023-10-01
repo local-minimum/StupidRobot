@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public delegate void LevelEndEvent();
+
 public class LevelGoal : MonoBehaviour
 {
+    public static event LevelEndEvent OnLevelEnd;
+
     [SerializeField]
     string NextLevel;
 
@@ -27,6 +31,7 @@ public class LevelGoal : MonoBehaviour
     IEnumerator<WaitForSeconds> delayReload()
     {
         yield return new WaitForSeconds(delay);
+        OnLevelEnd?.Invoke();
         SceneManager.LoadScene(NextLevel);
     }
 }

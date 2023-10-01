@@ -11,6 +11,11 @@ public class LetterField : MonoBehaviour
 
     private LetterBox[] letterBoxes;
 
+    [SerializeField]
+    bool restoreFromPrefs = true;
+    bool restoring = false;
+
+
     private void Awake()
     {
         letterBoxes = GetComponentsInChildren<LetterBox>();
@@ -18,19 +23,60 @@ public class LetterField : MonoBehaviour
 
     private void Start()
     {
+        if (restoreFromPrefs) RestoreLetters();
+
         SelectNextLetterBox(false);
+        CheckWords();
+    }
+
+    string locksKey = "Letters.Locks";
+    string lettersKey = "Letters.Values";
+
+    void RestoreLetters()
+    {
+        restoring = true;
+        var letters = PlayerPrefs.GetString(lettersKey, "");
+        var locks = PlayerPrefs.GetString(locksKey, "");
+        for (int i = 0, l = Mathf.Min(letters.Length, locks.Length, letterBoxes.Length); i<l; i++)
+        {
+            var box = letterBoxes[i];
+            box.Letter = letters.Substring(i, 1);
+            box.Unlocked = locks.Substring(i, 1) == "1";
+        }
+        restoring = false;
+    }
+
+    private void SaveLetters()
+    {
+        var letters = string.Join("", letterBoxes.Select(lb => lb.Letter));
+        var locks = string.Join("", letterBoxes.Select(lb => lb.Unlocked ? "1" : "0"));
+        PlayerPrefs.SetString(lettersKey, letters);
+        PlayerPrefs.SetString(locksKey, locks);
     }
 
     private void OnEnable()
     {
         LetterBox.OnLetterBoxChange += LetterBox_OnLetterBoxChange;
         OnAbilitiesChange += LetterField_OnAbilitiesChange;
+        TrapTile.OnLevelReset += TrapTile_OnLevelReset;
+        LevelGoal.OnLevelEnd += LevelGoal_OnLevelEnd;
     }
 
     private void OnDisable()
     {
         OnAbilitiesChange -= LetterField_OnAbilitiesChange;
-        LetterBox.OnLetterBoxChange -= LetterBox_OnLetterBoxChange;    
+        LetterBox.OnLetterBoxChange -= LetterBox_OnLetterBoxChange;
+        TrapTile.OnLevelReset -= TrapTile_OnLevelReset;
+        LevelGoal.OnLevelEnd -= LevelGoal_OnLevelEnd;
+    }
+    private void TrapTile_OnLevelReset()
+    {
+        SaveLetters();
+    }
+
+    private void LevelGoal_OnLevelEnd()
+    {
+        SaveLetters();
     }
 
     public bool CanCleanBoxes { get; private set; }
@@ -42,6 +88,7 @@ public class LetterField : MonoBehaviour
 
     private void LetterBox_OnLetterBoxChange(LetterBox letterBox, bool backSpace)
     {
+        if (restoring) return;
         CheckWords();
         SelectNextLetterBox(backSpace);
     }

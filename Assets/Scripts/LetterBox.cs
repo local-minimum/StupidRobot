@@ -8,7 +8,18 @@ public delegate void LetterBoxChangeEvent(LetterBox letterBox, bool backSpace);
 public class LetterBox : MonoBehaviour
 {
     public static event LetterBoxChangeEvent OnLetterBoxChange;
-    LetterField field;
+    LetterField _field;
+    LetterField field
+    {
+        get
+        {
+            if (_field == null)
+            {
+                _field = GetComponentInParent<LetterField>();
+            }
+            return _field;
+        }
+    }
 
     [SerializeField]
     TMPro.TextMeshProUGUI TextUI;
@@ -127,7 +138,6 @@ public class LetterBox : MonoBehaviour
 
     private void Start()
     {
-        field = GetComponentInParent<LetterField>();
         unlocked = startUnlocked;
         SyncUI();
     }
