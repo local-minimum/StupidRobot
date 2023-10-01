@@ -17,6 +17,7 @@ public enum StatusEventType
 {
     None,
     Eager,
+    Destruct
 }
 
 public delegate void ActionEvent(ActionEventType eventType);
@@ -39,15 +40,15 @@ public class ActionsController : MonoBehaviour
         public string actionName;
         public StatusEventType eventType;
         public bool isPositive;
+        public bool beneficial;
+
+        Color ActiveColor(Color positive, Color negative) => beneficial ? positive : negative;
 
         private Color GetColor(Color positive, Color negative, Color disabled, bool status)
         {
-            if (isPositive)
-            {
-                return status ? positive : disabled;
-            }
-            return status ? negative : disabled;
+            return status ? ActiveColor(positive, negative) : disabled;
         }
+
         public void ResolveColor(Color positive, Color negative, Color disabled, bool status)
         {
             textUI.color = GetColor(positive, negative, disabled, status);

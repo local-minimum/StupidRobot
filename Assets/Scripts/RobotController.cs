@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public delegate void SelfDestructEvent();
 
 public class RobotController : MonoBehaviour
 {
+    public static SelfDestructEvent OnDestruct;
+
     private void OnEnable()
     {
         ActionsController.OnActionEvent += ActionsController_OnActionEvent;
@@ -18,11 +23,32 @@ public class RobotController : MonoBehaviour
     }
 
     bool eager;
+
+    bool destructing;
+    float destructStart;
+    float destructEnd;
+
+    [SerializeField]
+    ParticleSystem smokeSystem;
+
     private void ActionsController_OnStatusEvent(StatusEventType eventType, bool enabled)
     {
         if (eventType == StatusEventType.Eager)
         {
             eager = enabled;
+        } else if (eventType == StatusEventType.Destruct)
+        {
+            if (enabled && !destructing)
+            {
+                destructing = true;
+                destructStart = Time.timeSinceLevelLoad;
+                destructEnd = destructStart + ticksToDestruct * tickDuration;
+                smokeSystem.Play();
+            } else if (!enabled && destructing)
+            {
+                destructing = false;
+                smokeSystem.Stop();
+            }
         }
     }
 
@@ -70,6 +96,9 @@ public class RobotController : MonoBehaviour
     Quaternion rotationTarget;
     [SerializeField]
     AnimationCurve rotationEasing;
+
+    [SerializeField]
+    int ticksToDestruct = 3;
 
     void EaseAction(ActionEventType action, float progress)
     {
@@ -195,6 +224,12 @@ public class RobotController : MonoBehaviour
                 nextAction = ActionEventType.None;
             }
             StartAction(currentAction);
+        }
+
+        if (destructing && Time.timeSinceLevelLoad > destructEnd)
+        {
+            OnDestruct?.Invoke();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
