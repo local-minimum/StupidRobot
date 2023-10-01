@@ -14,12 +14,29 @@ public class TrapTile : MonoBehaviour
         var robot = go.GetComponent<RobotController>();
         robot.enabled = false;
 
-        StartCoroutine(delayReload());
+        StartCoroutine(delayReload(go));
     }
-    
-    IEnumerator<WaitForSeconds> delayReload()
+
+    [SerializeField]
+    float rotationSpeed = 5;
+
+    [SerializeField]
+    AnimationCurve rotator;
+
+    [SerializeField]
+    AnimationCurve scaler;
+
+    IEnumerator<WaitForSeconds> delayReload(GameObject go)
     {
-        yield return new WaitForSeconds(delay);
+        var progress = 0f;
+        var start = Time.timeSinceLevelLoad;
+        while (progress < 1)
+        {
+            progress = (Time.timeSinceLevelLoad - start) / delay;
+            go.transform.localScale = Vector3.one * scaler.Evaluate(progress);
+            go.transform.Rotate(Vector3.forward, rotationSpeed * rotator.Evaluate(progress));
+            yield return new WaitForSeconds(0.02f);
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

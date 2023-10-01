@@ -11,10 +11,15 @@ public class LevelGoal : MonoBehaviour
     [SerializeField]
     float delay = 0.5f;
 
+    [SerializeField]
+    ParticleSystem flagsSplotion;
+
     public void OnEnterTile(GameObject go)
     {
         var robot = go.GetComponent<RobotController>();
         robot.enabled = false;
+
+        flagsSplotion.Play();
 
         StartCoroutine(delayReload());
     }
