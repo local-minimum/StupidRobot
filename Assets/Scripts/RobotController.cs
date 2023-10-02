@@ -209,6 +209,9 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    string destructScene;
+
     private void Update()
     {
         var tickProgress = Mathf.Clamp01((Time.timeSinceLevelLoad - actionStart) / tickDuration);
@@ -229,7 +232,11 @@ public class RobotController : MonoBehaviour
         if (destructing && Time.timeSinceLevelLoad > destructEnd)
         {
             OnDestruct?.Invoke();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(
+                string.IsNullOrEmpty(destructScene) ?
+                SceneManager.GetActiveScene().name :
+                destructScene
+            );
         }
     }
 

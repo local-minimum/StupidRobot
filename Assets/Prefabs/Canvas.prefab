@@ -331,7 +331,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4533226700914956244}
+  m_TargetGraphic: {fileID: 4533226700719343284}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -642,7 +642,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4533226700691258151}
+  m_TargetGraphic: {fileID: 4533226701369208819}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1265,7 +1265,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4533226701688476364}
+  m_TargetGraphic: {fileID: 4533226701799494211}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1669,7 +1669,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4533226701697585122}
+  m_TargetGraphic: {fileID: 4533226702436171447}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4426,6 +4426,10 @@ PrefabInstance:
     - target: {fileID: 1202827009210252369, guid: c088a96ce3fb88e4299c2f5a970daa8c, type: 3}
       propertyPath: m_Name
       value: LetterBox (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202827009232560104, guid: c088a96ce3fb88e4299c2f5a970daa8c, type: 3}
+      propertyPath: m_text
+      value: I
       objectReference: {fileID: 0}
     - target: {fileID: 1202827009232560104, guid: c088a96ce3fb88e4299c2f5a970daa8c, type: 3}
       propertyPath: m_fontSize

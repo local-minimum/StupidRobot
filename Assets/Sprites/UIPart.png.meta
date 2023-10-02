@@ -359,6 +359,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UIPart_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11fce2ab579c3334381d1424e926e2f4
+      internalID: -883266543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -375,6 +396,7 @@ TextureImporter:
       UIPart_7: 200223692
       UIPart_10: -2028888592
       UIPart_9: 1597374986
+      UIPart_11: -883266543
       UIPart_0: 1471990816
       UIPart_1: 825291159
       UIPart_6: -617724444
