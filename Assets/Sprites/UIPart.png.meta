@@ -258,8 +258,8 @@ TextureImporter:
       name: UIPart_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 384
+        x: 384
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -271,6 +271,90 @@ TextureImporter:
       bones: []
       spriteID: 9ba005861e5ed28418a040c75540b406
       internalID: -617724444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIPart_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 090a0de7c736220459eebb3c9d763db5
+      internalID: 200223692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIPart_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfe489f722a366340aa64dba93a46044
+      internalID: 1519345927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIPart_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 556d3a0cbd294c4439bfc47275116a5d
+      internalID: 1597374986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIPart_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d97d80722b7cebe41859d6c5607cbf0f
+      internalID: -2028888592
       vertices: []
       indices: 
       edges: []
@@ -288,11 +372,15 @@ TextureImporter:
     nameFileIdTable:
       UIPart_4: 1038818616
       UIPart_2: 1959756064
+      UIPart_7: 200223692
+      UIPart_10: -2028888592
+      UIPart_9: 1597374986
       UIPart_0: 1471990816
       UIPart_1: 825291159
       UIPart_6: -617724444
       UIPart_5: 2095850836
       UIPart_3: 525778526
+      UIPart_8: 1519345927
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
